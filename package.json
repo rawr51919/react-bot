@@ -1,8 +1,29 @@
 {
   "name": "react-bot",
-  "description": "Discord reaction bot",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "An old Discord reaction bot written in Discord.js and modernized for 2025.",
+  "main": "index.js",
+  "type": "module",
   "dependencies": {
-    "discord.js": "^11.2.1"
-  }
+    "@eslint/js": "^9.33.0",
+    "@jest/globals": "^30.0.5",
+    "discord.js": "^14.21.0",
+    "dotenv": "^17.2.1",
+    "eslint": "^9.33.0",
+    "globals": "^16.3.0",
+    "jest": "^30.0.5"
+  },
+  "scripts": {
+    "test": "npx eslint . && npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rawr51919/react-bot.git"
+  },
+  "author": "rawr51919/eunakria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rawr51919/react-bot/issues"
+  },
+  "homepage": "https://github.com/rawr51919/react-bot#readme"
 }

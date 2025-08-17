@@ -1,7 +1,10 @@
 # Discord reaction bot
-A simple Discord reaction bot created originally for @coltonrawr#5011.
+
+A simple Discord reaction bot created originally for @chloerawr#5011.
+She took it over and modernized it for modern Discord in 2025.
 
 ## Usage
+
 1. `npm i`
 2. Modify `config.json`
 3. `node index.js`
