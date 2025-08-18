@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "An old Discord reaction bot written in Discord.js and modernized for 2025.",
   "main": "index.js",
-  "type": "module",
   "dependencies": {
     "@eslint/js": "^9.33.0",
     "@jest/globals": "^30.0.5",
@@ -14,7 +13,9 @@
     "jest": "^30.0.5"
   },
   "scripts": {
-    "test": "npx eslint . && npx jest"
+    "test": "npx eslint . && npx jest",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
