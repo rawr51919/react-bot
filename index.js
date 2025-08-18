@@ -40,8 +40,7 @@ if (!process.env.DISCORD_TOKEN) {
   console.error("❌ DISCORD_TOKEN is missing in .env");
   process.exit(1);
 } else {
-  console.log("✅ Logging in with Discord token, length:", process.env.DISCORD_TOKEN.length);
-  console.log("ReactBot is ready.");
+  console.log("✅ Logging in with Discord token, length:", process.env.DISCORD_TOKEN.length + "\nReactBot is ready.");
 }
 
 client.login(process.env.DISCORD_TOKEN).catch(err => {
