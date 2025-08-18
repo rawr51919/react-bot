@@ -18,23 +18,56 @@ const client = new Client({
   ],
 });
 
-client.on("messageCreate", (msg) => { // note: 'messageCreate' in v14
-  for (let i of config.reactions) {
-    let regex = new RegExp(
-      i.regex.content,
-      (i.regex.global ? "g" : "") +
-      (i.regex.multiline ? "m" : "") +
-      (i.regex.caseInsensitive ? "i" : "")
-    );
-    if (regex.test(msg.content)) {
-      msg.react(
-        i.serverEmoji
-          ? client.emojis.cache.find(e => e.name === i.serverEmoji)?.id
-          : i.unicodeEmoji
-      ).catch(console.error);
-    }
+client.on("messageCreate", async (msg) => {
+  const tasks = config.reactions
+    .filter(r => shouldReact(msg.content, r.regex))
+    .map(r => tryReact(msg, r).catch(console.error));
+
+  if (tasks.length > 0) {
+    await Promise.all(tasks);
   }
 });
+
+/**
+ * Build regex and test against message content
+ */
+function shouldReact(content, regexDef) {
+  const flags =
+    (regexDef.global ? "g" : "") +
+    (regexDef.multiline ? "m" : "") +
+    (regexDef.caseInsensitive ? "i" : "");
+  const regex = new RegExp(regexDef.content, flags);
+  return regex.test(content);
+}
+
+/**
+ * Attempt to react with either a server or unicode emoji
+ */
+async function tryReact(msg, reaction) {
+  if (reaction.serverEmoji) {
+    const emoji = await resolveServerEmoji(msg, reaction.serverEmoji);
+    if (emoji) {
+      return msg.react(emoji);
+    }
+    console.warn(`⚠️  Emoji "${reaction.serverEmoji}" not found in cache or guild`);
+  }
+
+  if (reaction.unicodeEmoji) {
+    return msg.react(reaction.unicodeEmoji);
+  }
+}
+
+/**
+ * Resolve a guild emoji by name, checking cache first then fetching
+ */
+async function resolveServerEmoji(msg, emojiName) {
+  let emoji = client.emojis.cache.find(e => e.name === emojiName);
+  if (!emoji && msg.guild) {
+    const fetched = await msg.guild.emojis.fetch();
+    emoji = fetched.find(e => e.name === emojiName);
+  }
+  return emoji;
+}
 
 if (!process.env.DISCORD_TOKEN) {
   console.error("❌ DISCORD_TOKEN is missing in .env");
